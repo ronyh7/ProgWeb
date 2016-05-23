@@ -20,7 +20,6 @@ public class hey {
         else{
             url=linea;
         }
-        //https://en.wikipedia.org/wiki/David_Shore
         Document doc = new Document("");
         try {
             doc= Jsoup.connect(url).get();
@@ -28,8 +27,7 @@ public class hey {
             e.printStackTrace();
         }
 
-        //int lines = doc.html().split(System.getProperty("line.separator")).length;
-       // doc.outputSettings(new Document.OutputSettings().prettyPrint(false));
+
         Elements parrafos= doc.getElementsByTag("p");
         Elements imagenes= doc.getElementsByTag("img");
         Elements forms= doc.getElementsByTag("form");
