@@ -10,15 +10,25 @@ import java.util.Scanner;
  */
 public class p1 {
     public static void main(String[] args) {
-        Scanner data = new Scanner(System.in);
-        String linea = data.nextLine();
-        String url = new String();
+        String linea = new String();
+        String url= new String();
+        boolean punto = true;
+        System.out.print("Por favor Introducir una url:");
+        do{
+            Scanner scanner = new Scanner(System.in);
+            linea = scanner.nextLine();
+            if(linea.contains(".")){
+                punto=false;
+            }
+            else{
+                System.out.print("Url no valida, por favor introducir otra:");
+            }
+        }while(punto);
         if (!linea.contains("http")) {
             url = "http://" + linea;
         } else {
             url = linea;
         }
-
         Document doc = new Document("");
         try {
             doc = Jsoup.connect(url).get();
