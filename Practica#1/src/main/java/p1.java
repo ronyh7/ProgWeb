@@ -35,5 +35,15 @@ public class p1 {
         System.out.println("b)" + parrafos.size());
         System.out.println("c)" + imagenes.size());
         System.out.println("d)" + forms.size());
+        System.out.print("e)");
+        for(int i=0; i< forms.size();i++){
+            System.out.println("Form ID:"+forms.get(i).attr("id"));
+            inputs = forms.get(i).select("input");
+            for(int j=0; j < inputs.size() ; j++ ){
+                System.out.println("Input name:" + inputs.get(j).attr("name") + " Input type:" + inputs.get(j).attr("type"));
+            }
+
+        }
+
     }
 }
