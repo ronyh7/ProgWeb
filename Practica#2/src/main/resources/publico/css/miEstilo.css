@@ -1,0 +1,17 @@
+h1{
+    color: black;
+}
+
+body{
+    background-color: #5d2bff;
+    font-family: "Times New Roman";
+}
+input{
+    display: inline-block;
+    border: solid darkgrey 2px;
+}
+
+#nombre{
+    right: 20px;
+
+}

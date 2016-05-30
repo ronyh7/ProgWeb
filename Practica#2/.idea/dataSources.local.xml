@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="H2 - test" uuid="4a8636fc-05d6-4943-ac3f-ab712893669e">
+    <data-source name="H2 - practica5" uuid="5cf82412-83e2-4098-9389-f01642f2f2ff">
       <secret-storage>master_key</secret-storage>
       <user-name>sa</user-name>
     </data-source>

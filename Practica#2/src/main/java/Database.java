@@ -18,7 +18,7 @@ public class Database {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            conexion = DriverManager.getConnection("jdbc:h2:~/test", "sa", "1234");
+            conexion = DriverManager.getConnection("jdbc:h2:~/practica5", "sa", "1234");
         }
         return database;
     }
@@ -33,6 +33,18 @@ public class Database {
                 insert+="'"+params[i]+"'"+");";
         }
         conexion.createStatement().execute(insert);
+    }
+
+    public void delete(String Matricula) throws SQLException {
+        String delete="DELETE FROM ESTUDIANTES WHERE MATRICULA="+"'"+Matricula+"'";
+        conexion.createStatement().execute(delete);
+    }
+
+    public void update(String[] estudiante) throws SQLException {
+        String update=String.format("UPDATE ESTUDIANTES SET NOMBRE = '%s', APELLIDOS = '%s', TELEFONO = '%s'" +
+                        " WHERE MATRICULA = '%s'",
+                estudiante[1], estudiante[2], estudiante[3], estudiante[0]);
+        conexion.createStatement().execute(update);
     }
 
     public ArrayList<Estudiante> select() throws SQLException {
