@@ -18,6 +18,10 @@ input{
     border: groove darkblue 1.5px;
 }
 
+#matricula2{
+    background-color: darkgray;
+}
+
 
  #insertar{
      display: inline-block;

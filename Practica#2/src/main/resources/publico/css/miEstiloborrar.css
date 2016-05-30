@@ -17,7 +17,18 @@ input{
     display: inline-block;
     border: groove darkblue 1.5px;
 }
-
+#nombre3{
+    background-color: darkgray;
+}
+#telefono3{
+    background-color: darkgray;
+}
+#matricula3{
+    background-color: darkgray;
+}
+#apellidos3{
+    background-color: darkgray;
+}
 
  #insertar{
      display: inline-block;

@@ -46,7 +46,6 @@ public class Main {
                     break;
                 }
             }
-            System.out.println(request.params("matricula"));
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("titulo", "Borrar");
             attributes.put("estudiante",e);

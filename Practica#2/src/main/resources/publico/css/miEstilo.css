@@ -3,15 +3,34 @@ h1{
 }
 
 body{
-    background-color: #5d2bff;
+    background-color: #e6deff;
     font-family: "Times New Roman";
+}
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 80px;
+    text-align: left;
 }
 input{
     display: inline-block;
-    border: solid darkgrey 2px;
+    border: groove darkblue 1.5px;
 }
 
-#nombre{
-    right: 20px;
 
+ #insertar{
+     display: inline-block;
+     float: left;
+     width: 250px;
+ }
+#borrar{
+    display: inline-block;
+    float: left;
+    width: 250px;
+}
+#actualizar{
+    display: inline-block;
+    float: left;
+    width: 250px;
 }
