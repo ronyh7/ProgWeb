@@ -45,6 +45,32 @@ public class Database {
         conexion.createStatement().execute(insert);
     }
 
+    public void insertUsuario(String[] params) throws SQLException {
+        String insert="INSERT INTO USUARIO(USERNAME,NOMBRE,PASSWORD,ADMINISTRADOR,AUTOR,ABOUT) VALUES(";
+        for(int i=0;i<params.length;i++){
+            if(i==3 || i==4)
+                insert+=params[i]+",";
+            else if(i!=params.length-1)
+                insert+="'"+ params[i] + "',";
+            else
+                insert+="'"+params[i]+"'"+");";
+        }
+        conexion.createStatement().execute(insert);
+    }
+    public void insertComentario(String[] params) throws SQLException {
+        String insert="INSERT INTO COMENTARIO(ID, COMENTARIO, USUARIO, ARTICULO) VALUES(";
+        for(int i=0;i<params.length;i++){
+            if(i==0){
+                insert+=params[i]+",";
+            }
+            else if(i!=params.length-1)
+                insert+="'"+params[i]+"'"+",";
+            else
+                insert+="'"+params[i]+"'"+");";
+        }
+        conexion.createStatement().execute(insert);
+    }
+
     public void insertEtiqueta(long id, long aid, String etiqueta) throws SQLException {
         String insert="INSERT INTO ETIQUETA(ID, ARTICULO, ETIQUETA) VALUES(";
         insert+=id+","+aid+",'"+etiqueta+"')";
@@ -69,6 +95,28 @@ public class Database {
         selectEtiqueta(listaEtiqueta);
         selectComentario(listaComentario);
         selectArticulo(listaArticulo,listaUsuario,listaEtiqueta,listaComentario);
+    }
+    public Usuario login(String username,String password) throws SQLException {
+        String select="SELECT * FROM USUARIO WHERE USERNAME='"+username+"' AND PASSWORD='"+ password+"'";
+        System.out.println(select);
+        ResultSet r;
+        Usuario u=null;
+            r = conexion.createStatement().executeQuery(select);
+            while(r.next()){
+                if(r.getString("USERNAME").isEmpty()){
+                    return null;
+                }
+                else {
+                    u= new Usuario();
+                    u.setUsername(r.getString("USERNAME"));
+                    u.setPassword(r.getString("PASSWORD"));
+                    u.setNombre(r.getString("NOMBRE"));
+                    u.setAdministrador(r.getBoolean("ADMINISTRADOR"));
+                    u.setAutor(r.getBoolean("AUTOR"));
+                    u.setAbout(r.getString("ABOUT"));
+                }
+            }
+        return u;
     }
 
 

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>BLOG</title>
 
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -22,21 +22,64 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="/insertar/${username}" class="navbar-brand">BLOG</a>
+                <a href="/insertar/${user.username}" class="navbar-brand">BLOG</a>
             </div>
             <div>
                 <ul class="nav navbar-nav">
                     <li class="active"> <a href="">Inicio</a></li>
                     <li><a href="/articulo/">Mi Perfil</a></li>
+                    <#if user.administrador==true>
+                        <li><a href="/usuario/">Crear Usuario</a></li>
+                    </#if>
                 </ul>
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/home/">Logout</a></li>
+                    <#if user.username=="">
+                        <li><a href="/login/">Login</a></li>
+                    <#else>
+                        <li><a href="/login/">Logout</a></li>
+                    </#if>
                 </ul>
             </div>
         </div>
     </nav>
-    <h1>Hello, world!</h1>
+    <div class="col-md-12">
+        <#if user.username=="">
+            <#if marticulos?has_content>
+                <h1>Articulos</h1>
+            <ul>
+                <#list articulos as a>
+                    <li><a href="/articulo//">${a.titulo}</br>
+                        <pre>${a.cuerpo}</pre> </br></a></li>
+                </#list>
+            </ul>
+            <#else>
+                <h1>No hay articulos</h1>
+            </#if>
+        <#else>
+        <div class="col-md-6">
+            <h1>Tus Articulos</h1>
+            <#if marticulos?has_content>
+                <ul>
+                    <#list marticulos as a>
+                        <li><a href="/articulo/${user.username}/${a.id}">${a.titulo}</br>
+                        <pre>${a.cuerpo}</pre> </br></a></li>
+                    </#list>
+                </ul>
+            </#if>
+        </div>
+        <div class="col-md-6">
+            <h1>Articulos de otros usuarios</h1>
+            <#if darticulos?has_content>
+                <ol>
+                    <#list darticulos as d>
+                        <li>${d.titulo}</li>
+                    </#list>
+                </ol>
+            </#if>
+        </div>
+        </#if>
+    </div>
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

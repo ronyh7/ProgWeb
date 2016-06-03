@@ -14,6 +14,8 @@ sql> CREATE TABLE ARTICULO(
   CUERPO VARCHAR2(500),
   AUTOR VARCHAR2(30),
   DATE DATE,
+  QUOTE VARCHAR2(50),
+  QNAME VARCHAR2(30),
   FOREIGN KEY (AUTOR)
   REFERENCES USUARIO (USERNAME)
 )
@@ -40,3 +42,13 @@ sql> CREATE TABLE ETIQUETA (
 
 INSERT INTO USUARIO (USERNAME, NOMBRE, PASSWORD, ADMINISTRADOR, AUTOR)
     VALUES ('ronyh7','Rony Hernandez','1234',true,true);
+	
+	
+UPDATE ARTICULO SET QUOTE='Greatness from small beginnings',QNAME='Francis Drake'
+WHERE TITULO='Uncharted 3';
+
+$(document).ready(function() {
+    $('input').focus(function() {
+        $('input').css('outline-color', '#FF0000');    
+    });    
+});

@@ -17,9 +17,16 @@ public class Usuario {
         this.password = password;
         this.administrador = administrador;
         this.autor= autor;
-        this.setAbout(about);
+        this.about=about;
     }
-    public Usuario(){}
+    public Usuario(){
+        this.username= "";
+        this.nombre = "";
+        this.password = "";
+        this.about="";
+        this.administrador =false;
+        this.autor = false;
+    }
 
     public String getUsername() {
         return username;

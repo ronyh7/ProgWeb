@@ -34,6 +34,10 @@
                 <label>Body:</label> <textarea name="cuerpo" maxlength="500" id="cuerpo"></textarea><br/>
                 <label>Etiquetas:</label><input name="etiquetas" type="text"/><br/>
                 <mark>(ejemplo: #etiqueta1,#etiqueta2)</mark><br/>
+                <hr>
+                <h4><strong>opcional</strong></h4><br/>
+                <label>Dicho:</label> <input name="quote" type="text"/><br/>
+                <label>Escritor:</label> <input name="qname"  type="text"/><br/>
                 <button name="Insertar" id="insertar" type="submit">Enviar</button>
             </form>
         </div>

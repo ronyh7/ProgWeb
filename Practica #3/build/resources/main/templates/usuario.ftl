@@ -16,6 +16,7 @@
                 <ul class="nav navbar-nav">
                     <li> <a href="/home/">Inicio</a></li>
                     <li><a href="/articulo/">Mi Perfil</a></li>
+                    <li class="active"><a href="/usuario/">Crear Usuario</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -26,19 +27,16 @@
     </nav>
     <div class="container">
         <div class="col-md-3"></div>
-        <div class="col-md-4">
-            <h1>Escribe un articulo</h1>
-            <form action="/insertar/" method="post" >
-                <label>Titulo:</label> <input name="titulo" type="text"/><br/>
-                <label>Fecha:</label> <input name="fecha"  type="date"/><br/>
-                <label>Body:</label> <textarea name="cuerpo" maxlength="500" id="cuerpo"></textarea><br/>
-                <label>Etiquetas:</label><input name="etiquetas" type="text"/><br/>
-                <mark>(ejemplo: #etiqueta1,#etiqueta2)</mark><br/>
-                <hr>
-                <h4><strong>opcional</strong></h4><br/>
-                <label>Dicho:</label> <input name="quote" type="text"/><br/>
-                <label>Escritor:</label> <input name="qname"  type="text"/><br/>
-                <button name="Insertar" id="insertar" type="submit">Enviar</button>
+        <div class="col-md-5">
+            <h1>Inserta un nuevo usuario</h1>
+            <form action="/usuario/" method="post" >
+                <label>Username:</label> <input name="username" type="text"/><br/>
+                <label>Nombre:</label> <input name="nombre"  type="text"/><br/>
+                <label>Password:</label> <input name="password" type="password"></input><br/>
+                <label>About(Opcional):</label> <input name="about" type="text"/><br/>
+                <label>Autor:</label><input name="autor" type="checkbox" value="true"/><br/>
+                <label>Administrador:</label><input name="admin" type="checkbox" value="true"/><br/>
+                <button name="usuario" id="usuario" type="submit">Enviar</button>
             </form>
         </div>
     </div>

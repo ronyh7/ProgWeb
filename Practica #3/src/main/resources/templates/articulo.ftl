@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Blog Template for Bootstrap</title>
+    <title>Articulo</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/blog.css" rel="stylesheet">
-
+      <link href="/css/articulo.css" rel="stylesheet">
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
@@ -44,7 +44,7 @@
                   </ul>
 
                   <ul class="nav navbar-nav navbar-right">
-                      <li><a href="/home/">Logout</a></li>
+                      <li><a href="/login/">Logout</a></li>
                   </ul>
               </div>
           </div>
@@ -84,6 +84,21 @@
               <li><a href="#">Next</a></li>
             </ul>
           </nav>
+            <hr>
+            <#if comentarios?has_content>
+                <h1>Comentarios</h1>
+                <ol class="list-unstyled">
+                <#list comentarios as c>
+                    <li>${c.comentario}</li>
+                </#list>
+                </ol>
+            </#if>
+            <h2>Escribe un comentario</h2>
+            <form action="/articulo/${u.username}/${a.titulo}" method="post" >
+                <label>Comentario:</label> <textarea name="comentario" maxlength="200" id="comentario"></textarea><br/>
+                <button name="bcomentario" id="bcomentario" type="submit">Enviar</button>
+            </form>
+
 
         </div><!-- /.blog-main -->
 
@@ -98,7 +113,7 @@
             <h4>Archives</h4>
             <ol class="list-unstyled">
               <#list articulos as ar>
-                  <li><a href="/articulo/${ar.titulo}">${ar.titulo}</a></li>
+                  <li><a href="/articulo/${u.username}/${ar.titulo}">${ar.titulo}</a></li>
               </#list>
             </ol>
           </div>

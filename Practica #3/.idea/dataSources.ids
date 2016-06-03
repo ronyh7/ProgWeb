@@ -331,7 +331,6 @@
       <column name="QNAME" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="CONSTRAINT_E" columns="ID"/>
       <foreign-key name="CONSTRAINT_E5" columns="AUTOR" ref-table="USUARIO" ref-schema="PUBLIC" ref-catalog="PRACTICA3" ref-columns="USERNAME" update-rule="1" delete-rule="1" deferrability="2"/>
-      <index name="CONSTRAINT_E5_INDEX_4" unique="false" columns="AUTOR"/>
     </table>
     <table name="COMENTARIO" schema="PUBLIC" catalog="PRACTICA3" type="TABLE">
       <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -339,7 +338,6 @@
       <column name="USUARIO" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
       <column name="ARTICULO" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="CONSTRAINT_BAF" columns="ID"/>
-      <foreign-key name="CONSTRAINT_BA" columns="ARTICULO" ref-table="ARTICULO" ref-schema="PUBLIC" ref-catalog="PRACTICA3" ref-columns="ID" update-rule="1" delete-rule="1" deferrability="2"/>
       <foreign-key name="CONSTRAINT_B" columns="USUARIO" ref-table="USUARIO" ref-schema="PUBLIC" ref-catalog="PRACTICA3" ref-columns="USERNAME" update-rule="1" delete-rule="1" deferrability="2"/>
     </table>
     <table name="ETIQUETA" schema="PUBLIC" catalog="PRACTICA3" type="TABLE">
@@ -347,7 +345,6 @@
       <column name="ETIQUETA" sqlType="VARCHAR" precision="50" scale="0" nullable="true" jdbcType="12"/>
       <column name="ARTICULO" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="CONSTRAINT_D" columns="ID"/>
-      <foreign-key name="CONSTRAINT_DC" columns="ARTICULO" ref-table="ARTICULO" ref-schema="PUBLIC" ref-catalog="PRACTICA3" ref-columns="ID" update-rule="1" delete-rule="1" deferrability="2"/>
     </table>
     <table name="USUARIO" schema="PUBLIC" catalog="PRACTICA3" type="TABLE">
       <column name="USERNAME" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
