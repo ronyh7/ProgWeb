@@ -31,10 +31,6 @@ public class Main {
         ArrayList<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
         database=Database.getDatabase();
         database.selectAll(articulos,usuarios,etiquetas,comentarios);
-        /*System.out.println(articulos.size());
-        System.out.println(usuarios.size());
-        System.out.println(comentarios.size());
-        System.out.println(etiquetas.size());*/
         staticFileLocation("/publico");
         new Filtros().aplicarFiltros();
         Configuration configuration = new Configuration();
@@ -42,8 +38,11 @@ public class Main {
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
         freeMarkerEngine.setConfiguration(configuration);
 
-        get("/articulo/:username/:id", (request, response) -> {
+        get("/articulo/:id", (request, response) -> {
             Usuario u= request.session(true).attribute("usuario");
+            if(u==null){
+                u= new Usuario();
+            }
             Articulo a= new Articulo();
             Map<String, Object> attributes = new HashMap<>();
             for(int i=0;i<articulos.size();i++){
@@ -53,19 +52,41 @@ public class Main {
                     break;
                 }
             }
-
             ArrayList<Comentario> listaC = a.getListaComentarios();
-            if(listaC.size()==0){
-                listaC=null;
-            }
-            System.out.println(request.params("titulo"));
+
             attributes.put("u", a.getAutor());
             attributes.put("a",a);
+            attributes.put("ul",u);
             attributes.put("articulos",articulos);
-            attributes.put("titulo",request.params("titulo"));
             attributes.put("comentarios", listaC);
-            System.out.println(articulos.get(0).getQuote());
-            System.out.println(articulos.get(0).getTitulo());
+            return new ModelAndView(attributes, "articulo.ftl");
+        }, freeMarkerEngine);
+
+        get("/articulo/:id/:comentario", (request, response) -> {
+            Usuario u= request.session(true).attribute("usuario");
+            String comentario = request.params("comentario");
+            Comentario c = new Comentario();
+            Map<String, Object> attributes = new HashMap<>();
+            Articulo a = new Articulo();
+            Long id = Long.parseLong(request.params("id"));
+            for(int i=0;i<articulos.size();i++){
+                if(articulos.get(i).getId()==Long.parseLong(request.params("id"))){
+                    for(int j=0; j < articulos.get(i).getListaComentarios().size(); j++){
+                        if(articulos.get(i).getListaComentarios().get(j).getComentario().equals(comentario))
+                            c=articulos.get(i).getListaComentarios().get(j);
+                            articulos.get(i).getListaComentarios().remove(j);
+                            a= articulos.get(i);
+                            break;
+                    }
+                }
+            }
+            ArrayList<Comentario> listaC = a.getListaComentarios();
+            database.deleteComentario(c.getId());
+            attributes.put("u", a.getAutor());
+            attributes.put("a",a);
+            attributes.put("ul",u);
+            attributes.put("articulos",articulos);
+            attributes.put("comentarios", listaC);
             return new ModelAndView(attributes, "articulo.ftl");
         }, freeMarkerEngine);
 
@@ -85,6 +106,7 @@ public class Main {
                 else
                     e.add(articulos.get(i));
             }
+            System.out.println(articulos.size());
             attributes.put("titulo", "Home");
             attributes.put("articulos",articulos);
             attributes.put("marticulos", a);
@@ -95,18 +117,43 @@ public class Main {
 
         get("/insertar/:username", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
-            return new ModelAndView(attributes, "insertar.ftl");
+            return new ModelAndView(attributes, "insertarArticulo.ftl");
+        }, freeMarkerEngine);
+
+        get("/editar/:id", (request, response) -> {
+            Articulo a= new Articulo();
+            String e="";
+            long id = Long.parseLong(request.params("id"));
+            for(int i=0; i< articulos.size();i++){
+                if(articulos.get(i).getId()==id){
+                    a=articulos.get(i);
+                    break;
+                }
+            }
+            for(int i=0;i<a.getListaEtiquetas().size();i++){
+                if(i!=a.getListaEtiquetas().size()-1){
+                    e+=a.getListaEtiquetas().get(i).getEtiqueta()+",";
+                }
+                else{
+                    e+=a.getListaEtiquetas().get(i).getEtiqueta();
+                }
+            }
+            System.out.println(a.getTitulo());
+            System.out.print(e);
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("a",a);
+            attributes.put("etiquetas",e);
+            attributes.put("id",request.params("id"));
+            return new ModelAndView(attributes, "editarArticulo.ftl");
         }, freeMarkerEngine);
 
         get("/usuario/", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("titulo", "Insertar estudiante");
             return new ModelAndView(attributes, "usuario.ftl");
         }, freeMarkerEngine);
 
         get("/login/", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("titulo", "Insertar estudiante");
             System.out.println("1");
             return new ModelAndView(attributes, "login.ftl");
         }, freeMarkerEngine);
@@ -117,24 +164,73 @@ public class Main {
             String titulo = request.queryParams("titulo");
             String cuerpo =request.queryParams("cuerpo");
             String fecha =request.queryParams("fecha");
+            String quote =request.queryParams("quote");
+            String qname =request.queryParams("qname");
             String etiquetass =request.queryParams("etiquetas");
             String[] etiqueta=etiquetass.split(",");
+            if(quote==null){
+                quote="";
+                qname="";
+            }
             int e= database.count("ETIQUETA")+1;
             ArrayList<Etiqueta> listaEtiquetas = new ArrayList<Etiqueta>();
             int ai=database.count("ARTICULO")+1;
-            String[] p= {String.valueOf(ai),titulo,cuerpo,u.getUsername(),fecha};
+            String[] p= {String.valueOf(ai),titulo,cuerpo,u.getUsername(),fecha,quote,qname};
             database.insertArticulo(p);
             for(int i=0;i< etiqueta.length;i++){
                 listaEtiquetas.add(new Etiqueta(e+i,etiqueta[i],ai));
                 database.insertEtiqueta(e+i,ai,etiqueta[i]);
             }
-            Articulo a = new Articulo(ai,titulo,cuerpo,u,Date.valueOf(fecha),listaEtiquetas);
+            Articulo a = new Articulo(ai,titulo,cuerpo,u,Date.valueOf(fecha),listaEtiquetas,quote,qname);
             articulos.add(a);
             Map<String, Object> attributes = new HashMap<>();
             response.redirect("/home/");
 
             //enviando los parametros a la vista.
-            return new ModelAndView(attributes, "insertar.ftl");
+            return new ModelAndView(attributes, "insertarArticulo.ftl");
+        }, freeMarkerEngine);
+
+        post("/editar/:id", (request, response) -> {
+            Usuario u= request.session(true).attribute("usuario");
+            String titulo = request.queryParams("titulo");
+            String cuerpo =request.queryParams("cuerpo");
+            String quote =request.queryParams("quote");
+            String qname =request.queryParams("qname");
+            String id = request.params("id");
+            System.out.println(request.queryParams("quote"));
+            System.out.println(request.queryParams("qname"));
+
+            String etiquetass =request.queryParams("etiquetas");
+            System.out.println(etiquetass);
+            String[] etiqueta=etiquetass.split(",");
+            if(quote==null){
+                quote="";
+                qname="";
+            }
+            ArrayList<Etiqueta> listaEtiquetas = new ArrayList<Etiqueta>();
+            for(int i=0; i < etiqueta.length ; i++){
+                database.updateEtiqueta(etiqueta[i],id);
+
+            }
+            database.selectUpdatedEtiqueta(listaEtiquetas,id);
+            int j=0;
+            for(int i=0; i<articulos.size();i++){
+                if(articulos.get(i).getId()==Long.parseLong(id)){
+                    articulos.get(i).setTitulo(titulo);
+                    articulos.get(i).setCuerpo(cuerpo);
+                    articulos.get(i).setQuote(quote);
+                    articulos.get(i).setQname(qname);
+                    articulos.get(i).setListaEtiquetas(listaEtiquetas);
+                    j=i;
+                    break;
+                }
+            }
+            database.updateArticulo(articulos.get(j));
+            Map<String, Object> attributes = new HashMap<>();
+            response.redirect("/articulo/"+u.getUsername()+"/"+id);
+
+            //enviando los parametros a la vista.
+            return new ModelAndView(attributes, "insertarArticulo.ftl");
         }, freeMarkerEngine);
 
         post("/usuario/", (request, response) -> {
@@ -152,10 +248,11 @@ public class Main {
             response.redirect("/home/");
 
             //enviando los parametros a la vista.
-            return new ModelAndView(attributes, "insertar.ftl");
+            return new ModelAndView(attributes, "insertarArticulo.ftl");
         }, freeMarkerEngine);
 
         post("/articulo/:username/:titulo", (request, response) -> {
+            Usuario u= request.session(true).attribute("usuario");
             String titulo = request.params("titulo");
             String autor =request.params("username");
             String comentario =request.queryParams("comentario");
@@ -177,10 +274,10 @@ public class Main {
             if(listaC.size()==0){
                 listaC=null;
             }
-            attributes.put("u", usuarios.get(0));
+            attributes.put("ul",u);
             attributes.put("a",a);
+            attributes.put("u",a.getAutor());
             attributes.put("articulos",articulos);
-            attributes.put("username",autor);
             attributes.put("titulo",titulo);
             attributes.put("comentarios",listaC);
             return new ModelAndView(attributes, "articulo.ftl");
@@ -195,7 +292,14 @@ public class Main {
             Map<String, Object> attributes = new HashMap<>();
             response.redirect("/home/");
             //enviando los parametros a la vista.
-            return new ModelAndView(attributes, "insertar.ftl");
+            return new ModelAndView(attributes, "insertarArticulo.ftl");
+        }, freeMarkerEngine);
+
+        post("/articulo/:comentario", (request, response) -> {
+            System.out.println("WHat's up");
+            Map<String, Object> attributes = new HashMap<>();
+            //enviando los parametros a la vista.
+            return new ModelAndView(attributes, "articulo.ftl");
         }, freeMarkerEngine);
 
         post("/login/", (request, response)->{

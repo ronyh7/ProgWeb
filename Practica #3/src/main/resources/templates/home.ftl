@@ -44,11 +44,11 @@
     </nav>
     <div class="col-md-12">
         <#if user.username=="">
-            <#if marticulos?has_content>
+            <#if articulos?has_content>
                 <h1>Articulos</h1>
             <ul>
                 <#list articulos as a>
-                    <li><a href="/articulo//">${a.titulo}</br>
+                    <li><a href="/articulo/${a.id}">${a.titulo}</br>
                         <pre>${a.cuerpo}</pre> </br></a></li>
                 </#list>
             </ul>
@@ -61,7 +61,7 @@
             <#if marticulos?has_content>
                 <ul>
                     <#list marticulos as a>
-                        <li><a href="/articulo/${user.username}/${a.id}">${a.titulo}</br>
+                        <li><a href="/articulo/${a.id}">${a.titulo}</br>
                         <pre>${a.cuerpo}</pre> </br></a></li>
                     </#list>
                 </ul>
@@ -72,7 +72,8 @@
             <#if darticulos?has_content>
                 <ol>
                     <#list darticulos as d>
-                        <li>${d.titulo}</li>
+                        <li><a href="/articulo/${d.id}">${d.titulo}</br>
+                            <pre>${d.cuerpo}</pre> </br></a></li>
                     </#list>
                 </ol>
             </#if>

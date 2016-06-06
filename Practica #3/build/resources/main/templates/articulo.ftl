@@ -40,11 +40,17 @@
               <div>
                   <ul class="nav navbar-nav">
                       <li> <a href="/home/">Inicio</a></li>
-                      <li class="active"><a href="/articulo/">Mi Perfil</a></li>
+                      <#if ul.username== a.autor.username || ul.administrador=true>
+                         <li><a href="/editar/${a.id}">Editar articulo</a></li>
+                      </#if>
                   </ul>
 
                   <ul class="nav navbar-nav navbar-right">
-                      <li><a href="/login/">Logout</a></li>
+                        <#if ul.username=="">
+                            <li><a href="/login/">Login</a></li>
+                        <#else >
+                            <li><a href="/login/">Login</a></li>
+                        </#if>
                   </ul>
               </div>
           </div>
@@ -78,28 +84,33 @@
 
 
 
-          <nav>
-            <ul class="pager">
-              <li><a href="#">Previous</a></li>
-              <li><a href="#">Next</a></li>
-            </ul>
-          </nav>
+
             <hr>
             <#if comentarios?has_content>
                 <h1>Comentarios</h1>
                 <ol class="list-unstyled">
+
+
+
                 <#list comentarios as c>
-                    <li>${c.comentario}</li>
+                    <#if ul.username== a.autor.username || ul.administrador=true>
+                        <form action="/articulo/${c.comentario}" method="post">
+                            <li>${c.comentario}<a href="/articulo/${a.id}/${c.comentario}" type="submit"><br/>borrar comentario</a></li>
+                        </form>
+                    <#else>
+                        <li>${c.comentario}</li>
+                    </#if>
                 </#list>
                 </ol>
+
             </#if>
+            <#if ul.username!="">
             <h2>Escribe un comentario</h2>
             <form action="/articulo/${u.username}/${a.titulo}" method="post" >
                 <label>Comentario:</label> <textarea name="comentario" maxlength="200" id="comentario"></textarea><br/>
                 <button name="bcomentario" id="bcomentario" type="submit">Enviar</button>
             </form>
-
-
+            </#if>
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -115,14 +126,6 @@
               <#list articulos as ar>
                   <li><a href="/articulo/${u.username}/${ar.titulo}">${ar.titulo}</a></li>
               </#list>
-            </ol>
-          </div>
-          <div class="sidebar-module">
-            <h4>Elsewhere</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Facebook</a></li>
             </ol>
           </div>
         </div><!-- /.blog-sidebar -->

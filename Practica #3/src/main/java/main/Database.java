@@ -5,10 +5,7 @@ import encaculapcion.Comentario;
 import encaculapcion.Etiqueta;
 import encaculapcion.Usuario;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,7 +29,7 @@ public class Database {
     }
 
     public void insertArticulo(String[] params) throws SQLException {
-        String insert="INSERT INTO ARTICULO(ID, TITULO, CUERPO, AUTOR, DATE) VALUES(";
+        /*String insert="INSERT INTO ARTICULO(ID, TITULO, CUERPO, AUTOR, DATE, QUOTE, QNAME) VALUES(";
         for(int i=0;i<params.length;i++){
             if(i==0){
                 insert+=params[i]+",";
@@ -41,7 +38,10 @@ public class Database {
                 insert+="'"+params[i]+"'"+",";
             else
                 insert+="'"+params[i]+"'"+");";
-        }
+        }*/
+       String insert= String.format("INSERT INTO ARTICULO(ID, TITULO, CUERPO, AUTOR, DATE, QUOTE, QNAME) VALUES(%s,'%s','%s','%s','%s','%s','%s');",
+                params[0],params[1],params[2],params[3],params[4],params[5],params[6]);
+        System.out.println(insert);
         conexion.createStatement().execute(insert);
     }
 
@@ -77,9 +77,8 @@ public class Database {
         conexion.createStatement().execute(insert);
     }
 
-
-    public void delete(String Matricula) throws SQLException {
-        String delete="DELETE FROM ESTUDIANTES WHERE MATRICULA="+"'"+Matricula+"'";
+    public void deleteComentario(long id) throws SQLException {
+        String delete="DELETE FROM COMENTARIO WHERE ID="+id;
         conexion.createStatement().execute(delete);
     }
 
@@ -90,6 +89,23 @@ public class Database {
         conexion.createStatement().execute(update);
     }
 
+    public void updateEtiqueta(String e, String id) throws SQLException {
+        String update=String.format("UPDATE ETIQUETA SET ETIQUETA = '%s' "+
+                        " WHERE ARTICULO = '%s'",
+                e,id);
+        conexion.createStatement().execute(update);
+    }
+
+    public void updateArticulo(Articulo a) throws SQLException {
+        PreparedStatement s=conexion.prepareStatement("UPDATE ARTICULO SET TITULO = ?, CUERPO=?, QUOTE =?, QNAME =? WHERE ID = ?");
+        s.setString(1,a.getTitulo());
+        s.setString(2,a.getCuerpo());
+        s.setString(3,a.getQuote());
+        s.setString(4,a.getQname());
+        s.setLong(5,a.getId());
+        s.executeUpdate();
+    }
+
     public void selectAll(ArrayList<Articulo> listaArticulo,ArrayList<Usuario> listaUsuario, ArrayList<Etiqueta> listaEtiqueta, ArrayList<Comentario> listaComentario) throws SQLException {
         selectUsuario(listaUsuario);
         selectEtiqueta(listaEtiqueta);
@@ -98,7 +114,7 @@ public class Database {
     }
     public Usuario login(String username,String password) throws SQLException {
         String select="SELECT * FROM USUARIO WHERE USERNAME='"+username+"' AND PASSWORD='"+ password+"'";
-        System.out.println(select);
+        //System.out.println(select);
         ResultSet r;
         Usuario u=null;
             r = conexion.createStatement().executeQuery(select);
@@ -177,6 +193,15 @@ public class Database {
     public void selectEtiqueta(ArrayList<Etiqueta> lista) throws SQLException {
         //lista = new ArrayList<>();
         String select="SELECT * FROM ETIQUETA";
+        ResultSet r= conexion.createStatement().executeQuery(select);
+        while(r.next()){
+            lista.add(new Etiqueta(r.getInt("ID"),r.getString("ETIQUETA"),r.getLong("ARTICULO")));
+        }
+    }
+
+    public void selectUpdatedEtiqueta(ArrayList<Etiqueta> lista, String id) throws SQLException {
+        //lista = new ArrayList<>();
+        String select="SELECT * FROM ETIQUETA WHERE ARTICULO="+id;
         ResultSet r= conexion.createStatement().executeQuery(select);
         while(r.next()){
             lista.add(new Etiqueta(r.getInt("ID"),r.getString("ETIQUETA"),r.getLong("ARTICULO")));

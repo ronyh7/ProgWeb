@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insertar</title>
+<title>Editar articulo</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/insertar.css" rel="stylesheet" >
 
@@ -19,7 +19,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/home/">Logout</a></li>
+                    <li><a href="/login/">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -27,18 +27,16 @@
     <div class="container">
         <div class="col-md-3"></div>
         <div class="col-md-4">
-            <h1>Escribe un articulo</h1>
-            <form action="/insertar/" method="post" >
-                <label>Titulo:</label> <input name="titulo" type="text"/><br/>
-                <label>Fecha:</label> <input name="fecha"  type="date"/><br/>
-                <label>Body:</label> <textarea name="cuerpo" maxlength="500" id="cuerpo"></textarea><br/>
-                <label>Etiquetas:</label><input name="etiquetas" type="text"/><br/>
-                <mark>(ejemplo: #etiqueta1,#etiqueta2)</mark><br/>
+            <h1>Edita el articulo</h1>
+            <form action="/editar/${id}" method="post" >
+                <label>Titulo:</label> <input name="titulo"  value='${a.titulo}' type="text"/><br/>
+                <label>Body:</label> <textarea name="cuerpo"  maxlength="500" id="cuerpo">${a.cuerpo}</textarea><br/>
+                <input name="etiquetas" value=${etiquetas} type="text"/><br/>
                 <hr>
                 <h4><strong>opcional</strong></h4><br/>
-                <label>Dicho:</label> <input name="quote" type="text"/><br/>
-                <label>Escritor:</label> <input name="qname"  type="text"/><br/>
-                <button name="Insertar" id="insertar" type="submit">Enviar</button>
+                <label>Dicho:</label> <input name="quote" value='${a.quote}' type="text"/><br/>
+                <label>Escritor:</label> <input name="qname" value='${a.qname}'  type="text"/><br/>
+                <button name="Editar" id="editar" type="submit">Editar</button>
             </form>
         </div>
     </div>

@@ -15,6 +15,7 @@ public class Comentario {
         this.autor=autor;
         this.articuloid=articuloid;
     }
+    public Comentario(){}
 
     public long getId() {
         return id;

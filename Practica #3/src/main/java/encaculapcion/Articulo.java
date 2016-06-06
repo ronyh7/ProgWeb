@@ -17,13 +17,15 @@ public class Articulo {
     private ArrayList<Comentario> listaComentarios;
     private ArrayList<Etiqueta> listaEtiquetas;
 
-    public Articulo(long id,String titulo, String cuerpo, Usuario autor, Date fecha, ArrayList<Etiqueta> listaEtiquetas){
+    public Articulo(long id,String titulo, String cuerpo, Usuario autor, Date fecha, ArrayList<Etiqueta> listaEtiquetas, String quote, String qname){
         this.id=id;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.autor = autor;
         this.fecha = fecha;
         this.listaEtiquetas = listaEtiquetas;
+        this.quote = quote;
+        this.qname = qname;
     }
     public Articulo(long id,String titulo, String cuerpo, Usuario autor, Date fecha, String quote, String qname){
         this.id=id;

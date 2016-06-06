@@ -37,5 +37,15 @@ public class Filtros {
             }
         });
 
+        before("/editar/:id",(request, response) -> {
+            Usuario usuario=request.session(true).attribute("usuario");
+            if(usuario==null || usuario.getAutor()==false || usuario.getAdministrador()==false){
+                //parada del request, enviando un codigo.
+                response.redirect("/articulo/none/"+request.params("id"));
+            }
+        });
+
+
+
     }
 }
