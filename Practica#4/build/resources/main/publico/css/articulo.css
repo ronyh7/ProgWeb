@@ -1,0 +1,23 @@
+#comentario{
+  height: 150px;
+  width: 500px;
+}
+
+.divbutton {
+  height: 100px;
+  width: 200px;
+}
+
+
+
+#com{
+  border: solid black 2px;
+}
+
+.divbutton button {
+  display: none;
+}
+
+#com:hover button {
+  display: block;
+}
