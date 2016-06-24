@@ -20,7 +20,7 @@ public class Articulo {
     private Usuario autor;
     private String quote;
     private String qname;
-    private LocalDate fecha;
+    private Date fecha;
     private int cantidadLikes;
     private int cantidadDislikes;
     @OneToMany(mappedBy = "articulo", fetch = FetchType.EAGER)
@@ -39,7 +39,7 @@ public class Articulo {
         setListaComentarios(new HashSet<>());
         setListaEtiquetas(new HashSet<>());
         setUsuariosOpiniones(new HashSet<>());
-        opinionDada= false;
+        setOpinionDada(false);
         setCantidadLikes(0);
         setCantidadDislikes(0);
     }
@@ -75,11 +75,11 @@ public class Articulo {
         this.autor = autor;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

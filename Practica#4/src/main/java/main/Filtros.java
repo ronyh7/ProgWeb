@@ -1,6 +1,8 @@
 package main;
 
+import encapsulacion.Articulo;
 import encapsulacion.Usuario;
+import services.ArticuloServices;
 
 import static spark.Spark.*;
 
@@ -35,7 +37,7 @@ public class Filtros {
 
         before("/insertar/:username",(request, response) -> {
             Usuario usuario=request.session(true).attribute("usuario");
-            if(usuario==null || usuario.getAutor()==false || !(usuario.getUsername().equals(request.params("username"))) || usuario.getAdministrador()==false ){
+            if(usuario==null || !(usuario.getUsername().equals(request.params("username"))) || usuario.getAdministrador()==false){
                 response.redirect("/home/");
             }
         });
@@ -46,12 +48,17 @@ public class Filtros {
 
         before("/editar/:id",(request, response) -> {
             Usuario usuario=request.session(true).attribute("usuario");
-            if(usuario==null || usuario.getAutor()==false || usuario.getAdministrador()==false){
-                response.redirect("/articulo/none/"+request.params("id"));
+            if(usuario==null || usuario.getAdministrador()==false){
+                response.redirect("/articulo/"+request.params("id"));
             }
         });
 
-
+        before("/eliminar/:id",(request, response) -> {
+            Usuario usuario=request.session(true).attribute("usuario");
+            if(usuario==null || usuario.getAdministrador()==false){
+                response.redirect("/articulo/"+request.params("id"));
+            }
+        });
 
     }
 }

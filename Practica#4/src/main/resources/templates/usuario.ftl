@@ -15,7 +15,6 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li> <a href="/home/">Inicio</a></li>
-                    <li><a href="/articulo/">Mi Perfil</a></li>
                     <li class="active"><a href="/usuario/">Crear Usuario</a></li>
                 </ul>
 

@@ -61,13 +61,13 @@
 
       <div class="blog-header">
         <h1 class="blog-title">Blog de ${u.nombre}</h1>
-          <#if a.opinionDada==false || ul.username!="">
-          <form action="/articulo/${a.id}" method="post">
-              <input type="submit" id="Like" name="Like" value="Like">
-              <input type="submit" id="Dislike" name="Dislike" value="Dislike">
-          </form>
-          <#else>
+          <#if a.opinionDada==true || ul.username=="">
               Likes:<strong>${a.cantidadLikes}</strong> Dislikes:<strong>${a.cantidadDislikes}</strong>
+          <#else>
+              <form action="/articulo/${a.id}" method="post">
+                  <input type="submit" id="Like" name="Like" value="Like">
+                  <input type="submit" id="Dislike" name="Dislike" value="Dislike">
+              </form>
           </#if>
       </div>
 
@@ -109,7 +109,7 @@
                 <#list comentarios as c>
                     <#if ul.username== a.autor.username || ul.administrador=true>
                         <form action="/articulo/${a.id}/${c.id}" method="post">
-                            <li id="com">${c.comentario}<button name="bbcomentario" type="submit">Borrar</button></li></br>
+                            <li id="com">${c.comentario}<button name="bbcomentario" type="submit">Borrar</button></li>
                         </form>
                     <#else>
                         <li id="com">${c.comentario}</li>
@@ -125,7 +125,7 @@
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
           <div class="sidebar-module sidebar-module-inset">
               <if ${u.about}!="">
-                  <h4>About</h4>
+                  <h4>Sobre el autor:</h4>
                   <p>${u.about}</p>
               </if>
             </div>

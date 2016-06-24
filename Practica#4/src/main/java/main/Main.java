@@ -44,26 +44,34 @@ public class Main {
 
 
         get("/home/:pag", (request, response) -> {
-
+            EntityManager entityManage = g.getEntityManager();
             Usuario usuario= request.session(true).attribute("usuario");
             if(usuario==null){
                 usuario=new Usuario();
             }
             Map<String, Object> attributes = new HashMap<>();
-            String res="select a from Articulo a order by a.fecha";
-            Query q = entityManager.createQuery(res,Articulo.class);
+            String res="select a from Articulo a order by a.fecha desc";
+            Query q = entityManage.createQuery(res,Articulo.class);
             int p = Integer.parseInt(request.params("pag"));
             if(p==1) {
                 q.setFirstResult(0);
-                q.setMaxResults(4);
+                q.setMaxResults(5);
             }
             else if(p==2){
                 q.setFirstResult(5);
-                q.setMaxResults(9);
+                q.setMaxResults(10);
             }
             else if(p==3){
                 q.setFirstResult(10);
-                q.setMaxResults(14);
+                q.setMaxResults(15);
+            }
+            else if(p==4){
+                q.setFirstResult(15);
+                q.setMaxResults(20);
+            }
+            else {
+                q.setFirstResult(20);
+                q.setMaxResults(25);
             }
             List<Articulo> lista = q.getResultList();
             if(lista.size()==0){
@@ -76,6 +84,7 @@ public class Main {
                 lista.get(i).setCuerpo(s);
             }
             attributes.put("titulo", "Articulos");
+            attributes.put("tipo", "home");
             attributes.put("articulos",lista);
             attributes.put("user", usuario);
             return new ModelAndView(attributes, "home.ftl");
@@ -90,11 +99,9 @@ public class Main {
 
             Long id = Long.parseLong(request.params("id"));
             Articulo a= ArticuloServices.getInstancia().find(id);
-            System.out.println("yolo3"+ a.getUsuariosOpiniones().size());
             for(Usuario uo: a.getUsuariosOpiniones()){
                 if(uo.getUsername().equals(u.getUsername())) {
                     a.setOpinionDada(true);
-                    System.out.println("yolo" + a.getUsuariosOpiniones().size());
                     break;
                 }
             }
@@ -112,7 +119,6 @@ public class Main {
 
 
         get("/eliminar/:id", (request, response) -> {
-
             Usuario u= request.session(true).attribute("usuario");
             Long id = Long.parseLong(request.params("id"));
             Articulo a = ArticuloServices.getInstancia().find(id);
@@ -141,7 +147,7 @@ public class Main {
 
 
         get("/etiqueta/:pag/:etiqueta", (request, response) -> {
-
+            EntityManager entityManage = g.getEntityManager();
             Usuario usuario= request.session(true).attribute("usuario");
             if(usuario==null){
                 usuario=new Usuario();
@@ -149,20 +155,29 @@ public class Main {
             Long idEtiqueta = Long.parseLong(request.params("etiqueta"));
             Etiqueta et = EtiquetaServices.getInstancia().find(idEtiqueta);
             Map<String, Object> attributes = new HashMap<>();
-            String res="select a from Articulo a WHERE a.id ="+et.getArticulo().getId()+" order by a.fecha";
-            Query q = entityManager.createQuery(res,Articulo.class);
+            String res="select a from Articulo a, Etiqueta e WHERE a.id = e.articulo.id AND e.etiqueta='"+et.getEtiqueta()+"' order by a.fecha desc";
+            Query q = entityManage.createQuery(res,Articulo.class);
             int p = Integer.parseInt(request.params("pag"));
             if(p==1) {
+                System.out.println("lol");
                 q.setFirstResult(0);
-                q.setMaxResults(4);
+                q.setMaxResults(5);
             }
             else if(p==2){
                 q.setFirstResult(5);
-                q.setMaxResults(9);
+                q.setMaxResults(10);
             }
             else if(p==3){
                 q.setFirstResult(10);
-                q.setMaxResults(14);
+                q.setMaxResults(15);
+            }
+            else if(p==4){
+                q.setFirstResult(15);
+                q.setMaxResults(20);
+            }
+            else {
+                q.setFirstResult(20);
+                q.setMaxResults(25);
             }
             List<Articulo> lista = q.getResultList();
             for(int i=0;i<lista.size();i++){
@@ -171,7 +186,10 @@ public class Main {
                     s.substring(0,70);
                 lista.get(i).setCuerpo(s);
             }
+            System.out.println("lista: "+lista.size());
+            attributes.put("etiqueta",request.params("etiqueta"));
             attributes.put("titulo", et.getEtiqueta());
+            attributes.put("tipo", "etiqueta");
             attributes.put("articulos",lista);
             attributes.put("user", usuario);
             return new ModelAndView(attributes, "home.ftl");
@@ -196,7 +214,7 @@ public class Main {
             System.out.print(es);
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("a",a);
-            attributes.put("etiquetas",es);
+            attributes.put("etiquetas",es.substring(0,es.length()-1));
             attributes.put("id",id);
             return new ModelAndView(attributes, "editarArticulo.ftl");
         }, freeMarkerEngine);
@@ -219,12 +237,11 @@ public class Main {
 
 
        post("/insertar/", (request, response) -> {
-
            Usuario u= request.session(true).attribute("usuario");
            Articulo a = new Articulo();
            a.setTitulo(request.queryParams("titulo"));
            a.setCuerpo(request.queryParams("cuerpo"));
-           a.setFecha(LocalDateTime.now().toLocalDate());
+           a.setFecha(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
            a.setAutor(u);
            String quote =request.queryParams("quote");
            String qname =request.queryParams("qname");
@@ -332,7 +349,6 @@ public class Main {
             Usuario u= request.session(true).attribute("usuario");
             long id = Long.parseLong(request.params("id"));
             Articulo a = ArticuloServices.getInstancia().find(id);
-
             if(request.queryParams("Like")!=null || request.queryParams("Dislike")!= null){
 
                 if(request.queryParams("Like")!=null){
@@ -344,7 +360,6 @@ public class Main {
                     a.setCantidadDislikes(d+1);
                 }
                 a.getUsuariosOpiniones().add(u);
-                System.out.println("yolo2" + a.getUsuariosOpiniones().size());
                 a.setOpinionDada(false);
                 ArticuloServices.getInstancia().editar(a);
             }
@@ -413,5 +428,22 @@ public class Main {
             }
             return "";
         });
+    }
+    int paginacion(int p){
+        if(p==1) {
+            return 0;
+        }
+        else if(p==2){
+            return 5;
+        }
+        else if(p==3){
+            return 10;
+        }
+        else if(p==4){
+            return 15;
+        }
+        else{
+            return 20;
+        }
     }
 }

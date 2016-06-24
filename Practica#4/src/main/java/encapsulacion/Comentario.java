@@ -1,9 +1,7 @@
 package encapsulacion;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Rony on 5/30/2016.
@@ -18,13 +16,11 @@ public class Comentario {
     private Usuario autor;
     @ManyToOne
     private Articulo articulo;
-    private int cantidadLikes;
-    private int cantidadDislikes;
+
+
 
 
     public Comentario(){
-        setCantidadLikes(0);
-        setCantidadDislikes(0);
     }
 
     public long getId() {
@@ -59,19 +55,5 @@ public class Comentario {
         this.articulo = articuloid;
     }
 
-    public int getCantidadLikes() {
-        return cantidadLikes;
-    }
 
-    public void setCantidadLikes(int cantidadLikes) {
-        this.cantidadLikes = cantidadLikes;
-    }
-
-    public int getCantidadDislikes() {
-        return cantidadDislikes;
-    }
-
-    public void setCantidadDislikes(int cantidadDislikes) {
-        this.cantidadDislikes = cantidadDislikes;
-    }
 }

@@ -46,11 +46,12 @@
             <h1>${titulo}</h1>
         <ul>
             <#list articulos as a>
-                <li><a href="/articulo/${a.id}">${a.titulo}</a> &nbsp&nbsp&nbsp Likes:<strong>${a.cantidadLikes}</strong> &nbsp Dislikes:<strong>${a.cantidadDislikes}</strong></br>
+                <li><a href="/articulo/${a.id}"><h5 style="color:#9acfea">${a.titulo}</h5></a> &nbsp&nbsp&nbsp Likes:<strong>${a.cantidadLikes}</strong> &nbsp Dislikes:<strong>${a.cantidadDislikes}</strong></br>
                     <pre>${a.cuerpo}</pre></li>
                 <#list a.listaEtiquetas as e>
                     <a href="/etiqueta/1/${e.id}">${e.etiqueta}</a>
                 </#list>
+                </br>
                 </br>
             </#list>
         </ul>
@@ -59,11 +60,19 @@
         </#if>
         <div class="pag">
                 <ul class="pagination pagination-lg">
-                    <li><a href="/home/1">1</a></li>
-                    <li><a href="/home/2">2</a></li>
-                    <li><a href="/home/3">3</a></li>
-                    <li><a href="/home/4">4</a></li>
-                    <li><a href="/home/5">5</a></li>
+                    <#if tipo=='home'>
+                        <li><a href="/home/1">1</a></li>
+                        <li><a href="/home/2">2</a></li>
+                        <li><a href="/home/3">3</a></li>
+                        <li><a href="/home/4">4</a></li>
+                        <li><a href="/home/5">5</a></li>
+                    <#else>
+                        <li><a href="/etiqueta/1/${etiqueta}">1</a></li>
+                        <li><a href="/etiqueta/2/${etiqueta}">2</a></li>
+                        <li><a href="/etiqueta/3/${etiqueta}">3</a></li>
+                        <li><a href="/etiqueta/4/${etiqueta}">4</a></li>
+                        <li><a href="/etiqueta/5/${etiqueta}">5</a></li>
+                    </#if>
                 </ul>
             </div>
     </div>

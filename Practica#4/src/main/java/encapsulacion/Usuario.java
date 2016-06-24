@@ -17,11 +17,11 @@ public class Usuario {
     private String about;
 
     public Usuario(){
-        username="";
-        nombre="";
-        password="";
-        about="";
-        administrador=false;
+        setUsername("");
+        this.nombre="";
+        this.password="";
+        this.about="";
+        this.administrador=false;
         autor=false;
     }
 

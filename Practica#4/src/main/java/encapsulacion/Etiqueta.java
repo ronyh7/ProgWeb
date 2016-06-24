@@ -13,9 +13,10 @@ public class Etiqueta {
     @Id
     @GeneratedValue
     private long id;
+    private String etiqueta;
     @ManyToOne
     private Articulo articulo;
-    private String etiqueta;
+
 
     public Etiqueta(long id, String etiqueta,Articulo Articulo){
         this.id=id;
